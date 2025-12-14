@@ -6,9 +6,9 @@
 
 // 配置GPIO Chip 和 Line Offset
 #define TFT_GPIO_CHIP_NAME "gpiochip3"
-#define TFT_RST_OFFSET 3  // RST 引脚号
-#define TFT_DC_OFFSET 2   // DC 引脚号
-#define TFT_BLK_OFFSET 1 // 背光引脚号 (假设有，如果没有设为 -1)
+#define TFT_RST_OFFSET     3 // RST 引脚号
+#define TFT_DC_OFFSET      2 // DC 引脚号
+#define TFT_BLK_OFFSET     1 // 背光引脚号 (假设有，如果没有设为 -1)
 
 // 全局 GPIO 句柄 (在 .c 文件中定义)
 extern struct gpiod_line *line_rst;
@@ -21,6 +21,7 @@ extern struct gpiod_line *line_blk;
 #define TFT_RST(x)  do { if(line_rst) gpiod_line_set_value(line_rst, x); } while(0)
 #define TFT_DC(x)   do { if(line_dc)  gpiod_line_set_value(line_dc, x); } while(0)
 #define TFT_BLK(x)  do { if(line_blk) gpiod_line_set_value(line_blk, x); } while(0)
+// clang-format on
 
 // CS 操作适配：
 // 在 Linux spidev 中，ioctl 传输时会自动拉低 CS，传输结束自动拉高。
@@ -31,19 +32,19 @@ extern struct gpiod_line *line_blk;
 void delay_ms(int ms);
 
 // RGB565颜色定义保持不变
-#define WHITE 0xffff
-#define BLACK 0x0000
-#define RED 0xf800
-#define GREEN 0x0400
-#define BLUE 0x001f
+#define WHITE    0xffff
+#define BLACK    0x0000
+#define RED      0xf800
+#define GREEN    0x0400
+#define BLUE     0x001f
 #define DARKBLUE 0x0011
-#define PINK 0xfdf9
-#define ORANGE 0xfd20
-#define YELLOW 0xffe0
-#define CYAN 0x07ff
-#define PURPLE 0x8010
-#define GRAY 0x8410
-#define BROWN 0xa145
+#define PINK     0xfdf9
+#define ORANGE   0xfd20
+#define YELLOW   0xffe0
+#define CYAN     0x07ff
+#define PURPLE   0x8010
+#define GRAY     0x8410
+#define BROWN    0xa145
 
 // 屏幕控制函数声明
 void TFT_Init(void);

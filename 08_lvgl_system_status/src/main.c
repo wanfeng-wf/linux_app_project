@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <signal.h>
 #include <sys/time.h>
 #include "bsp_spi.h"
-#include "tft_st7735s.h"
+#include "get_sys_status.h" // 底层驱动
 #include "lvgl.h"
 #include "lvgl_port.h"
-#include "sys_model.h"      // 模型
-#include "get_sys_status.h" // 底层驱动
-#include "ui_app.h"         // UI 接口
+#include "sys_model.h" // 模型
+#include "tft_st7735s.h"
+#include "ui_app.h" // UI 接口
 
 // 运行标志位
 static volatile sig_atomic_t keep_running = 1;
@@ -71,10 +72,7 @@ int main(void)
 }
 
 // 信号处理
-void int_handler(int dummy)
-{
-    keep_running = 0;
-}
+void int_handler(int dummy) { keep_running = 0; }
 
 // 定义一个 LVGL 定时器，充当 Controller 的角色
 void controller_timer_cb(lv_timer_t *timer)
@@ -83,7 +81,7 @@ void controller_timer_cb(lv_timer_t *timer)
 
     // 1. [Backend] 从底层获取数据
     // 这一步完全可以在此处做缓存逻辑，比如 IP 不需要每秒都读
-    current_status.cpu_temp = get_cpu_temp();
+    current_status.cpu_temp  = get_cpu_temp();
     current_status.mem_usage = get_mem_usage();
 
     // 简单的降频处理：每 5 秒才去读一次 IP，因为 ioctl 比较耗时
