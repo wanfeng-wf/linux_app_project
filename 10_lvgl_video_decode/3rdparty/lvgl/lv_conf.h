@@ -74,15 +74,17 @@
 #define LV_MEM_BUF_MAX_NUM 16
 
 /*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
-#define LV_MEMCPY_MEMSET_STD 0
+// 确保内存拷贝使用标准库 (RK3566 的 libc memcpy 有汇编优化，比 LVGL 自带的快)
+#define LV_MEMCPY_MEMSET_STD 1
 
 /*====================
    HAL SETTINGS
  *====================*/
 
 /*Default display refresh period. LVG will redraw changed areas with this period time*/
-// #define LV_DISP_DEF_REFR_PERIOD 30      /*[ms] 刷新帧率限制，默认 30ms (限制在 33 FPS) (避免空转占用 CPU)*/
-#define LV_DISP_DEF_REFR_PERIOD 10
+// #define LV_DISP_DEF_REFR_PERIOD 30      /*[ms] 刷新帧率限制，默认 30ms (限制在 33 FPS)*/
+// 降低刷新请求频率，避免 CPU 做无用功生成发不出去的帧
+#define LV_DISP_DEF_REFR_PERIOD 33      // 33ms = 30FPS。对于 SPI 屏，30FPS 足够流畅且稳定
 
 /*Input device read period in milliseconds*/
 #define LV_INDEV_DEF_READ_PERIOD 30     /*[ms]*/

@@ -26,15 +26,21 @@ static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t
 void lv_port_disp_init(void)
 {
     // 1. 初始化显示缓冲区
-    // 定义一个缓冲区，大小为屏幕大小
+    // 定义两个缓冲区，大小为屏幕大小
     static lv_disp_draw_buf_t draw_buf;
     static lv_color_t buf1[DISP_BUF_SIZE];
+    static lv_color_t buf2[DISP_BUF_SIZE];
     // 如果想更丝滑，可以开双缓冲 buf2，但单缓冲对 ST7735 足够了
-    lv_disp_draw_buf_init(&draw_buf, buf1, NULL, DISP_BUF_SIZE);
+    lv_disp_draw_buf_init(&draw_buf, buf1, buf2, DISP_BUF_SIZE);
 
     // 2. 初始化并注册显示驱动
     static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);        // 初始化结构体
+
+    // 开启 full_refresh 可以避免局部刷新带来的残影，但会增加 SPI 负载
+    // 对于播放视频，建议开启 partial (默认)，但对于全屏 UI，full_refresh 可能更稳
+    disp_drv.full_refresh = 1;
+
     disp_drv.hor_res = MY_DISP_HOR_RES; // 设置水平分辨率
     disp_drv.ver_res = MY_DISP_VER_RES; // 设置垂直分辨率
     disp_drv.flush_cb = my_disp_flush;  // 设置上面的回调函数
