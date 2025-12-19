@@ -24,7 +24,7 @@
  *====================*/
 
 /*Color depth: 1 (1 byte per pixel), 8 (RGB332), 16 (RGB565), 32 (ARGB8888)*/
-#define LV_COLOR_DEPTH 16 // 2. 设置颜色深度（ST7735 是 RGB565，即 16位）
+#define LV_COLOR_DEPTH 16 // 设置颜色深度（RGB565，即 16位）
 
 /*Swap the 2 bytes of RGB565 color. Useful if the display has an 8-bit interface (e.g. SPI)*/
 /* ST7735 需要大端序 (Big Endian)，Linux ARM 是小端序。

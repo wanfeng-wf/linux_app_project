@@ -20,7 +20,7 @@ static long int screensize = 0;
  */
 static int fbdev_init(void)
 {
-    // 打开 ST7735S 对应的 fb1 设备
+    // 打开屏幕对应的 fb1 设备
     fbfd = open("/dev/fb1", O_RDWR);
     if (fbfd == -1)
     {
@@ -75,7 +75,7 @@ static void my_fb_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *c
     // 计算当前刷新区域的宽度
     int32_t act_w = lv_area_get_width(area);
 
-    // ST7735S 是 16bit (2 bytes/pixel)
+    // 16bit (2 bytes/pixel)
     long int location       = 0;
     long int byte_per_pixel = vinfo.bits_per_pixel / 8;
 

@@ -5,11 +5,12 @@
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
+#include "lvgl_port_fb.h"
 
 // 目标参数 (屏幕参数)
-#define SCREEN_W       160
-#define SCREEN_H       128
-#define SCREEN_PIX_FMT AV_PIX_FMT_RGB565 // ST7735 通常是小端 RGB565
+#define SCREEN_W       MY_DISP_HOR_RES // 水平分辨率
+#define SCREEN_H       MY_DISP_VER_RES // 垂直分辨率
+#define SCREEN_PIX_FMT AV_PIX_FMT_RGB565 //小端 RGB565
 
 // 全局变量
 static AVFormatContext *pFormatCtx = NULL;
