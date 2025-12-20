@@ -16,11 +16,28 @@ static char *fbp           = 0;
 static long int screensize = 0;
 
 /**
+ * @brief 控制背光
+ * @param state 1 为开, 0 为关
+ */
+static void fbdev_set_backlight(int state)
+{
+    const char *path_pw = "/sys/class/backlight/fb_ili9341/bl_power";
+
+    // bl_power 节点 (0:亮, 4:灭)
+    FILE *fp = fopen(path_pw, "w");
+    if (fp)
+    {
+        fprintf(fp, "%d", state ? 0 : 4);
+        fclose(fp);
+    }
+}
+
+/**
  * @brief 初始化 Framebuffer 设备 (/dev/fb1)
  */
 static int fbdev_init(void)
 {
-    // 打开屏幕对应的 fb1 设备
+    // 打开 ST7735S 对应的 fb1 设备
     fbfd = open("/dev/fb1", O_RDWR);
     if (fbfd == -1)
     {
@@ -75,7 +92,7 @@ static void my_fb_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t *c
     // 计算当前刷新区域的宽度
     int32_t act_w = lv_area_get_width(area);
 
-    // 16bit (2 bytes/pixel)
+    // ST7735S 是 16bit (2 bytes/pixel)
     long int location       = 0;
     long int byte_per_pixel = vinfo.bits_per_pixel / 8;
 
@@ -131,6 +148,8 @@ int lv_port_fb_init(void)
 
     // 注册
     lv_disp_drv_register(&disp_drv);
+    // 打开背光
+    fbdev_set_backlight(1);
 
     return 0;
 }
@@ -140,6 +159,9 @@ int lv_port_fb_init(void)
  */
 void lv_port_fb_deinit(void)
 {
+    // 关闭背光
+    fbdev_set_backlight(0);
+
     if (fbp && screensize > 0)
     {
         printf("\nClearing screen...\n");
