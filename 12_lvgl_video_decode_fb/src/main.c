@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include "lvgl.h"
-#include "lvgl_port_fb.h"
+#include "lv_port_disp.h"
 #include "ui_mp4.h"
 
 static volatile sig_atomic_t keep_running = 1;
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     lv_init();
 
     // 打开 /dev/fb1 并注册驱动
-    if (lv_port_fb_init() != 0)
+    if (lv_port_disp_init() != 0)
     {
         printf("Failed to init framebuffer!\n");
         return -1;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     }
 
     ui_mp4_deinit();
-    lv_port_fb_deinit();
+    lv_port_disp_deinit();
 
     return 0;
 }

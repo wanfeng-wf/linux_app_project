@@ -5,7 +5,7 @@
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
-#include "lvgl_port_fb.h"
+#include "lv_port_disp.h"
 
 // 目标参数 (屏幕参数)
 #define SCREEN_W       MY_DISP_HOR_RES // 水平分辨率
