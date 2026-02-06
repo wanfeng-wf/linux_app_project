@@ -4,6 +4,11 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+#define TSDEV_PATH      "/dev/input/event7"
+#define TSDEV_CALIBFILE "/etc/pointercal"
+#define TSDEV_CONFFILE  "/etc/ts.conf"
+#define TSDEV_PLUGINDIR "/usr/lib/aarch64-linux-gnu/ts0"
+
 static struct tsdev *ts = NULL;
 
 static void touchpad_read(lv_indev_drv_t *drv, lv_indev_data_t *data)
@@ -40,10 +45,10 @@ void lv_port_indev_init(void)
 {
     // 在初始化驱动之前，强制设置环境变量
     // 参数说明：变量名, 变量值, 1(表示如果已存在则覆盖)
-    setenv("TSLIB_TSDEVICE", "/dev/input/event5", 1);
-    setenv("TSLIB_CALIBFILE", "/etc/pointercal", 1);
-    setenv("TSLIB_CONFFILE", "/etc/ts.conf", 1);
-    setenv("TSLIB_PLUGINDIR", "/usr/lib/aarch64-linux-gnu/ts0", 1);
+    setenv("TSLIB_TSDEVICE", TSDEV_PATH, 1);
+    setenv("TSLIB_CALIBFILE", TSDEV_CALIBFILE, 1);
+    setenv("TSLIB_CONFFILE", TSDEV_CONFFILE, 1);
+    setenv("TSLIB_PLUGINDIR", TSDEV_PLUGINDIR, 1);
 
     /* 添加 TS_NOTBLOCK 标志 */
     /* 这会让 ts_setup 以非阻塞方式打开设备节点 */

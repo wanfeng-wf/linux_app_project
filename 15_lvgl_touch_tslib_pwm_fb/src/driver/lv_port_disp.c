@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 
 // --- PWM 控制定义 ---
-#define PWM_CHIP_PATH "/sys/class/pwm/pwmchip1"
+#define PWM_CHIP_PATH "/sys/class/pwm/pwmchip0"
 #define PWM_PERIOD_NS 50000 // 20kHz 周期
 
 // --- Framebuffer 私有变量 ---
@@ -91,6 +91,20 @@ static void pwm_init(void)
 
     // 初始亮度设为 80%
     pwm_set_brightness(80);
+}
+
+/**
+ * @brief 关闭 PWM 硬件
+ */
+static void pwm_deinit(void)
+{
+    char path[128];
+
+    sprintf(path, "%s/pwm0/enable", PWM_CHIP_PATH);
+    sysfs_write(path, "0");
+
+    sprintf(path, "%s/unexport", PWM_CHIP_PATH);
+    sysfs_write(path, "0");
 }
 
 /**
@@ -224,6 +238,9 @@ void lv_port_disp_deinit(void)
     // 关闭背光 (亮度设为 0)
     pwm_set_brightness(0);
 
+    // 关闭 PWM
+    pwm_deinit();
+
     if (fbp && screensize > 0)
     {
         printf("\nClearing screen...\n");
@@ -246,7 +263,7 @@ void lv_port_disp_deinit(void)
  * @brief 设置背光亮度
  * @param percent 亮度百分比 (0-100)
  */
- void lv_port_set_brightness(int percent)
+void lv_port_set_brightness(int percent)
 {
     pwm_set_brightness(percent);
 }

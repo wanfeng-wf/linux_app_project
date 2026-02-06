@@ -3,7 +3,7 @@ BUILD_DIR = ./build
 
 # --- 远程部署配置 ---
 REMOTE_USER = root
-REMOTE_IP   = 192.168.7.2
+REMOTE_IP   = 192.168.137.2
 REMOTE_PATH = /root/$(TARGET_EXEC)
 
 # --- 交叉编译工具链 ---
