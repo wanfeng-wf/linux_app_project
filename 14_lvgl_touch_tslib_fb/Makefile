@@ -22,7 +22,11 @@ SRCS := $(shell find $(SRC_DIRS) -name '*.c')
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 
 # 追加目录
-INC_DIRS += ./3rdparty/lvgl ./inc
+INC_DIRS += ./3rdparty/lvgl ./inc 
+
+# 引入tslib
+TSLIB_DIR = /opt/tslib-arm
+INC_DIRS += $(TSLIB_DIR)/include
 
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
@@ -32,7 +36,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 CFLAGS = -Os -g -Wall -ffunction-sections -fdata-sections $(INC_FLAGS) -DLV_CONF_INCLUDE_SIMPLE
 
 # --- 链接参数 ---
-LDFLAGS = -Wl,--gc-sections -flto
+LDFLAGS = -Wl,--gc-sections -flto -L$(TSLIB_DIR)/lib
 # 如果需要链接 math 库或 pthread，在这里添加 -lm -lpthread
 LDLIBS = -lm -lts
 
